@@ -1,5 +1,6 @@
 ## 从安装python3.5.2开始
 
+
 1. 操作环境：CentOS 7
 2. 编译环境的安装：yum install zlib-devel bzip2-devel openssl-devel ncurese-devel（要先安装这个不然python安装不完整，会没有pip3)
 3. cd ~/下载 wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz 
