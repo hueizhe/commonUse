@@ -149,4 +149,4 @@ public class TestSimpleDateFormat2 {
     }
 }
 ~~~
-* 代码（1）创建了一个线程安全的SimpleDateFormat实例，步骤（3）在使用的时候首先使用get()方法获取当前线程下SimpleDateFormat的实例，在第一次调用ThreadLocal的get（）方法适合会触发其initialValue方法用来创建当前线程所需要的SimpleDateFormat对象。
+> 代码（1）创建了一个线程安全的SimpleDateFormat实例，步骤（3）在使用的时候首先使用get()方法获取当前线程下SimpleDateFormat的实例，在第一次调用ThreadLocal的get（）方法适合会触发其initialValue方法用来创建当前线程所需要的SimpleDateFormat对象。
