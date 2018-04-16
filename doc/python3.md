@@ -6,7 +6,7 @@
 ~~~
 yum install zlib-devel bzip2-devel openssl-devel ncurese-devel（要先安装这个不然python安装不完整，会没有pip3)
 ~~~
-3.
+3. 进入下载目录，并解压，进入解压后的目录
 ~~~ 
  cd ~/下载 wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
  tar -xf Python-3.5.2.tgz 
