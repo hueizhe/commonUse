@@ -60,10 +60,10 @@ public class FutureTest {
 
 
 image.png
-代码(1)创建了一个单线程并且队列元素个数为1的线程池，并且拒绝策略设置为了DiscardPolicy
-代码（2）向线程池提交了一个任务one，那么这个任务会使用唯一的一个线程进行执行，任务在打印 start runable one后会阻塞该线程5s.
-代码（3）向线程池提交了一个任务two，这时候会把任务two放入到阻塞队列
-代码（4）向线程池提交任务three，由于队列已经满了则会触发拒绝策略丢弃任务three,从执行结果看在任务one阻塞的5s内，主线程执行到了代码(5)等待任务one执行完毕，当任务one执行完毕后代码（5）返回，主线程打印出task one null。任务one执行完成后线程池的唯一线程会去队列里面取出任务two并执行所以输出start runable two然后代码（6）会返回，这时候主线程输出task two null，然后执行代码（7）等待任务three执行完毕，从执行结果看代码（7）会一直阻塞不会返回，至此问题产生，如果把拒绝策略修改为DiscardOldestPolicy也会存在有一个任务的get方法一直阻塞只是现在是任务two被阻塞。但是如果拒绝策略设置为默认的AbortPolicy则会正常返回，并且会输出如下结果：
+* 代码(1)创建了一个单线程并且队列元素个数为1的线程池，并且拒绝策略设置为了DiscardPolicy
+* 代码（2）向线程池提交了一个任务one，那么这个任务会使用唯一的一个线程进行执行，任务在打印 start runable one后会阻塞该线程5s.
+* 代码（3）向线程池提交了一个任务two，这时候会把任务two放入到阻塞队列
+* 代码（4）向线程池提交任务three，由于队列已经满了则会触发拒绝策略丢弃任务three,从执行结果看在任务one阻塞的5s内，主线程执行到了代码(5)等待任务one执行完毕，当任务one执行完毕后代码（5）返回，主线程打印出task one null。任务one执行完成后线程池的唯一线程会去队列里面取出任务two并执行所以输出start runable two然后代码（6）会返回，这时候主线程输出task two null，然后执行代码（7）等待任务three执行完毕，从执行结果看代码（7）会一直阻塞不会返回，至此问题产生，如果把拒绝策略修改为DiscardOldestPolicy也会存在有一个任务的get方法一直阻塞只是现在是任务two被阻塞。但是如果拒绝策略设置为默认的AbortPolicy则会正常返回，并且会输出如下结果：
 ~~~
 start runable one
 Task java.util.concurrent.FutureTask@135fbaa4 rejected from java.util.concurrent.ThreadPoolExecutor@45ee12a7[Running, pool size = 1, active threads = 1, queued tasks = 1, completed tasks = 0]
@@ -112,12 +112,12 @@ task three null
 ~~~
 根据代码可以总结如下：
 
-代码（1）装饰Runnable为FutureTask对象，然后调用线程池的execute方法
-代码(2) 如果线程个数消息核心线程数则新增处理线程处理
-代码（3）如果当前线程个数已经达到核心线程数则任务放入队列
-代码（4）尝试新增处理线程进行处理，失败则进行代码（5），否者直接使用新线程处理
-代码（5）执行具体拒绝策略。
-所以要分析上面例子中问题所在只需要看步骤（5）对被拒绝任务的影响，这里先看下拒绝策略DiscardPolicy的代码：
+* 代码（1）装饰Runnable为FutureTask对象，然后调用线程池的execute方法
+* 代码(2) 如果线程个数消息核心线程数则新增处理线程处理
+* 代码（3）如果当前线程个数已经达到核心线程数则任务放入队列
+* 代码（4）尝试新增处理线程进行处理，失败则进行代码（5），否者直接使用新线程处理
+* 代码（5）执行具体拒绝策略。
+> 所以要分析上面例子中问题所在只需要看步骤（5）对被拒绝任务的影响，这里先看下拒绝策略DiscardPolicy的代码：
 ~~~
     public static class DiscardPolicy implements RejectedExecutionHandler {
         public DiscardPolicy() { }
@@ -125,7 +125,7 @@ task three null
         }
     }
 ~~~
-可知拒绝策略rejectedExecution方法里面什么都没做，所以代码（4）调用submit后会返回一个future对象，这里有必要在重新说future是有状态的，future的状态枚举值如下：
+> 可知拒绝策略rejectedExecution方法里面什么都没做，所以代码（4）调用submit后会返回一个future对象，这里有必要在重新说future是有状态的，future的状态枚举值如下：
 
     private static final int NEW          = 0;
     private static final int COMPLETING   = 1;
@@ -134,7 +134,7 @@ task three null
     private static final int CANCELLED    = 4;
     private static final int INTERRUPTING = 5;
     private static final int INTERRUPTED  = 6;
-在步骤（1）的时候使用newTaskFor方法转换Runnable任务为FutureTask，而FutureTask的构造函数里面设置的状态就是New。
+> 在步骤（1）的时候使用newTaskFor方法转换Runnable任务为FutureTask，而FutureTask的构造函数里面设置的状态就是New。
 ~~~
     public FutureTask(Runnable runnable, V result) {
         this.callable = Executors.callable(runnable, result);
