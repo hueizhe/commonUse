@@ -16,14 +16,15 @@ The management plugin is included in the RabbitMQ distribution. To enable it, us
 ~~~
  rabbitmq-plugins enable rabbitmq_management
 ~~~
-The Web UI is located at: http://server-name:15672/
-The Web UI uses an HTTP API provided by the same plugin. Said API's documentation can be accessed at http://server-host:15672/api/ or our latest HTTP API documentation here).
-Download rabbitmqadmin at: http://server-name:15672/cli/
-NB: The port for RabbitMQ versions prior to 3.0 is 55672.
+* The Web UI is located at: http://server-name:15672/
+* The Web UI uses an HTTP API provided by the same plugin. 
+* Said API's documentation can be accessed at http://server-host:15672/api/ or our latest HTTP API documentation here.
+* Download rabbitmqadmin at: http://server-name:15672/cli/
+* NB: The port for RabbitMQ versions prior to 3.0 is 55672.
 
-To use the web UI you will need to authenticate as a RabbitMQ user (on a fresh installation the user "guest" is created with password "guest"). From here you can manage exchanges, queues, bindings, virtual hosts, users and permissions. Hopefully the UI is fairly self-explanatory.
+> To use the web UI you will need to authenticate as a RabbitMQ user (on a fresh installation the user "guest" is created with password "guest"). From here you can manage exchanges, queues, bindings, virtual hosts, users and permissions. Hopefully the UI is fairly self-explanatory.
 
-The management UI is implemented as a single static HTML page which makes background queries to the HTTP API. As such it makes heavy use of Javascript. It has been tested with recent versions of Firefox, Chromium and Safari, and with versions of Microsoft Internet Explorer back to 6.0.
+> The management UI is implemented as a single static HTML page which makes background queries to the HTTP API. As such it makes heavy use of Javascript. It has been tested with recent versions of Firefox, Chromium and Safari, and with versions of Microsoft Internet Explorer back to 6.0.
 
 
 ## rabbitmqctl
