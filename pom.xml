@@ -148,6 +148,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.19.1</version>
                 </plugin>
+
                 <!-- 依赖插件 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -155,27 +156,50 @@
                     <version>2.10</version>
                     <executions>
                         <execution>
-                            <id>unpack</id>
-                            <phase>deploy</phase>
+                            <id>copy-dependencies</id>
+                            <phase>compile</phase>
                             <goals>
-                                <goal>unpack</goal>
+                                <goal>copy-dependencies</goal>
                             </goals>
                             <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <!--
-                             <groupId></groupId>
-                                                 <artifactId></artifactId>
-                                                 <version></version>
-                                 <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                 <includes>META-INF/assembly/**</includes>
-                      -->
+                                <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+                                <includeScope>system</includeScope>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+
+                <!-- 依赖插件 -->
+                <!--
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-dependency-plugin</artifactId>
+                  <version>2.10</version>
+                  <executions>
+                      <execution>
+                          <id>unpack</id>
+                          <phase>deploy</phase>
+                          <goals>
+                              <goal>unpack</goal>
+                          </goals>
+                          <configuration>
+                              <artifactItems>
+                                  <artifactItem>
+
+                           <groupId></groupId>
+                                               <artifactId></artifactId>
+                                               <version></version>
+                               <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                               <includes>META-INF/assembly/**</includes>
+
                                     </artifactItem>
                                 </artifactItems>
                             </configuration>
                         </execution>
                     </executions>
                 </plugin>
+                -->
                 <!-- 分发插件 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -205,53 +229,7 @@
                         <charset>UTF-8</charset><!-- 文档  编码 -->
                         <docencoding>UTF-8</docencoding><!-- html 编码 -->
                         <encoding>UTF-8</encoding><!-- 源码  编码 -->
-                        <tags>
-                            <tag>
-                                <name>包名称</name>
-                                <placement>p</placement>
-                                <head>包名称</head>
-                            </tag>
-                            <tag>
-                                <name>类名称</name>
-                                <placement>t</placement>
-                                <head>类型名称</head>
-                            </tag>
-                            <tag>
-                                <name>类描述</name>
-                                <placement>t</placement>
-                                <head>类型描述</head>
-                            </tag>
-                            <tag>
-                                <name>方法名称</name>
-                                <placement>m</placement>
-                                <head>方法名称</head>
-                            </tag>
-                            <tag>
-                                <name>功能描述</name>
-                                <placement>m</placement>
-                                <head>方法描述</head>
-                            </tag>
-                            <tag>
-                                <name>修改记录</name>
-                                <placement>a</placement>
-                                <head>修改记录</head>
-                            </tag>
-                            <tag>
-                                <name>版本</name>
-                                <placement>a</placement>
-                                <head>版本</head>
-                            </tag>
-                            <tag>
-                                <name>作者</name>
-                                <placement>a</placement>
-                                <head>作者</head>
-                            </tag>
-                            <tag>
-                                <name>创建时间</name>
-                                <placement>a</placement>
-                                <head>创建时间</head>
-                            </tag>
-                        </tags>
+
                     </configuration>
                 </plugin>
                 <!-- sonar插件 -->
