@@ -27,7 +27,8 @@ public class TestSimpleDateFormat {
 }
 ~~~
 
-代码（1）创建了SimpleDateFormat的一个实例，代码（2）创建10个线程，每个线程都公用同一个sdf对象对文本日期进行解析，多运行几次就会抛出java.lang.NumberFormatException异常，加大线程的个数有利于该问题复现
+* 代码（1）创建了SimpleDateFormat的一个实例，
+* 代码（2）创建10个线程，每个线程都公用同一个sdf对象对文本日期进行解析，多运行几次就会抛出java.lang.NumberFormatException异常，加大线程的个数有利于该问题复现
 
 ## 问题分析
 为了便于分析首先奉上SimpleDateFormat的类图结构：
@@ -71,8 +72,8 @@ Calendar establish(Calendar cal) {
 }
 ~~~
 
-代码（1）主要的作用是解析字符串日期并把解析好的数据放入了 CalendarBuilder的实例calb中，CalendarBuilder是一个建造者模式，用来存放后面需要的数据。
-代码（3）重置Calendar对象里面的属性值，如下代码：
+* 代码（1）主要的作用是解析字符串日期并把解析好的数据放入了 CalendarBuilder的实例calb中，CalendarBuilder是一个建造者模式，用来存放后面需要的数据。
+* 代码（3）重置Calendar对象里面的属性值，如下代码：
 ~~~
  public final void clear()
    {
@@ -85,9 +86,9 @@ Calendar establish(Calendar cal) {
    }
 ~~~
 
-代码（4）使用calb中解析好的日期数据设置cal对象
-代码（5） 返回设置好的cal对象
-从上面步骤可知步骤（3）（4）（5）操作不是原子性操作，当多个线程调用parse
+* 代码（4）使用calb中解析好的日期数据设置cal对象
+* 代码（5） 返回设置好的cal对象
+* 从上面步骤可知步骤（3）（4）（5）操作不是原子性操作，当多个线程调用parse
 方法时候比如线程A执行了步骤（3）（4）也就是设置好了cal对象，在执行步骤（5）前线程B执行了步骤（3）清空了cal对象，由于多个线程使用的是一个cal对象，所以线程A执行步骤（5）返回的就可能是被线程B清空后的对象，当然也有可能线程B执行了步骤（4）被线程B修改后的cal对象。从而导致程序错误。
 
 ## 那么怎么解决那？
@@ -148,4 +149,4 @@ public class TestSimpleDateFormat2 {
     }
 }
 ~~~
-代码（1）创建了一个线程安全的SimpleDateFormat实例，步骤（3）在使用的时候首先使用get()方法获取当前线程下SimpleDateFormat的实例，在第一次调用ThreadLocal的get（）方法适合会触发其initialValue方法用来创建当前线程所需要的SimpleDateFormat对象。
+* 代码（1）创建了一个线程安全的SimpleDateFormat实例，步骤（3）在使用的时候首先使用get()方法获取当前线程下SimpleDateFormat的实例，在第一次调用ThreadLocal的get（）方法适合会触发其initialValue方法用来创建当前线程所需要的SimpleDateFormat对象。
