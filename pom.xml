@@ -66,7 +66,7 @@
         <itext.asian.version>5.2.0</itext.asian.version><!-- pdf依赖包 -->
         <jsoup.version>1.8.1</jsoup.version><!-- HTML解析器 -->
 
-        <httpclient.version>4.3.4</httpclient.version>
+        <httpclient.version>4.5.6</httpclient.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-io.version>2.4</commons-io.version>
         <pinyin4j.version>2.5.0</pinyin4j.version>
